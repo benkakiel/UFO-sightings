@@ -37,7 +37,7 @@ void HashGrid::insertSighting(const Sighting &sighting, const int index) // Inse
   cells[coord].push_back(index); // Append index of sighting
 }
 
-std::vector<int> HashGrid::findCell(const double lat, const double lon) const
+std::vector<int> HashGrid::findCell(const double lat, const double lon) const // See if a sighting exists in the table in a specified coordinate
 {
   std::string coord = coordToCellHelper(lat, lon);
 
