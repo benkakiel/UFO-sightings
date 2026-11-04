@@ -7,7 +7,7 @@ static double toRadians(double deg)
     return deg * M_PI/180.0;
 }
 
-double haversineKm(double const lat1, double const lon1, double const lat2, double const lon2)
+double haversineKm(double const lat1, double const lon1, double const lat2, double const lon2) // Codex told me I needed a "haversine" function, but I wrote it
 {
     // Constant for Earth radius
     int constexpr radius = 6371;

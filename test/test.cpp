@@ -2,20 +2,30 @@
 #include <iostream>
 
 // uncomment and replace the following with your own headers
+#include "geo.h"
 // #include "AVL.h"
 
 using namespace std;
 
 // the syntax for defining a test is below. It is important for the name to be unique, but you can group multiple tests with [tags]. A test can have [multiple][tags] using that syntax.
-TEST_CASE("Test 1: Haversine", "[flag]"){
-	// instantiate any class members that you need to test here
-	int one = 1;
-
-	// anything that evaluates to false in a REQUIRE block will result in a failing test 
-	REQUIRE(one == 0); // fix me!
+TEST_CASE("Test 1: Haversine = 0", "[haversine]")
+{
+	double const distance = haversineKm(0.0, 0.0, 0.0, 0.0);
 
 	// all REQUIRE blocks must evaluate to true for the whole test to pass
-	REQUIRE(false); // also fix me!
+	REQUIRE(distance == 0); // also fix me!
+}
+
+TEST_CASE("Test 2: Haversine != 0" "[haversine]")
+{
+	double const distance = haversineKm(0.0, 0.0, 1.0, 0.0);
+	REQUIRE(std::abs(distance - 111.195) < 0.01); // Codex helped with the approximation because I wasn't sure
+}
+
+TEST_CASE("Test 3: Haversine != 0", "[haversine]")
+{
+	double const distance = haversineKm(1.0, 0.0, 0.0, 0.0);
+	REQUIRE(std::abs(distance - 111.195) < 0.01);
 }
 
 //TEST_CASE("Test 2", "[flag]"){
