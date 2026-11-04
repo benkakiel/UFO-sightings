@@ -1,13 +1,16 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
 #include <cmath>
+
+#include "sighting.h"
 
 static double toRadians(double deg)
 {
-    return deg * M_PI/180.0;
+    return deg * M_PI / 180.0;
 }
 
-double haversineKm(double const lat1, double const lon1, double const lat2, double const lon2) // Codex told me I needed a "haversine" function, but I wrote it
+double haversineKm(double const lat1, double const lon1, double const lat2, double const lon2)
+// Codex told me I needed a "haversine" function, but I wrote it
 {
     // Constant for Earth radius
     int constexpr radius = 6371;
@@ -17,8 +20,9 @@ double haversineKm(double const lat1, double const lon1, double const lat2, doub
     double const lonChange = lon2 - lon1;
 
     // Compute the intermediates for North-South, East-West, and then overall
-    double const interNS = sin(toRadians(latChange/2)) * sin(toRadians(latChange/2));
-    double const interEW = cos(toRadians(lat1)) * cos(toRadians(lat2)) * sin(toRadians(lonChange / 2)) * sin(toRadians(lonChange / 2));
+    double const interNS = sin(toRadians(latChange / 2)) * sin(toRadians(latChange / 2));
+    double const interEW = cos(toRadians(lat1)) * cos(toRadians(lat2)) * sin(toRadians(lonChange / 2)) * sin(
+                               toRadians(lonChange / 2));
     double inter = interNS + interEW;
 
     // Clamp values for the intermediate
@@ -35,4 +39,21 @@ double haversineKm(double const lat1, double const lon1, double const lat2, doub
 
     // Return the radius we're checking in
     return distance;
-};
+}
+
+std::vector<int> sightingsInDistance(const std::vector<Sighting>& sightings, double searchLat, double searchLon, double radius)
+{
+    std::vector<int> foundSightings;
+
+    for (std::size_t i = 0; i < sightings.size(); i++)
+    {
+      double currentLat = sightings[i].lat;
+      double currentLon = sightings[i].lon;
+      if (haversineKm(currentLat, currentLon, searchLat, searchLon) <= radius)
+      {
+        foundSightings.push_back(i);
+      }
+    }
+
+  return foundSightings;
+}

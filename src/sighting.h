@@ -5,9 +5,10 @@
 #ifndef PROJECT1_SIGHTING_H
 #define PROJECT1_SIGHTING_H
 #include <string>
+#include <vector>
 #pragma once
 
-struct Sighting
+struct Sighting // All data comprising a sighting
 {
     double lat;
     double lon;

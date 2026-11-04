@@ -1,63 +1,153 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
-
-// uncomment and replace the following with your own headers
 #include "geo.h"
-// #include "AVL.h"
-
 using namespace std;
 
-// the syntax for defining a test is below. It is important for the name to be unique, but you can group multiple tests with [tags]. A test can have [multiple][tags] using that syntax.
 TEST_CASE("Test 1: Haversine = 0", "[haversine]")
 {
-	double const distance = haversineKm(0.0, 0.0, 0.0, 0.0);
-
-	// all REQUIRE blocks must evaluate to true for the whole test to pass
-	REQUIRE(distance == 0); // also fix me!
+  double const distance = haversineKm(0.0, 0.0, 0.0, 0.0);
+  REQUIRE(distance == 0);
 }
 
 TEST_CASE("Test 2: Haversine != 0" "[haversine]")
 {
-	double const distance = haversineKm(0.0, 0.0, 1.0, 0.0);
-	REQUIRE(std::abs(distance - 111.195) < 0.01); // Codex helped with the approximation because I wasn't sure
+  double const distance = haversineKm(0.0, 0.0, 1.0, 0.0);
+  REQUIRE(std::abs(distance - 111.195) < 0.01); // Codex helped with the approximation because I wasn't sure
 }
 
 TEST_CASE("Test 3: Haversine != 0", "[haversine]")
 {
-	double const distance = haversineKm(1.0, 0.0, 0.0, 0.0);
-	REQUIRE(std::abs(distance - 111.195) < 0.01);
+  double const distance = haversineKm(1.0, 0.0, 0.0, 0.0);
+  REQUIRE(std::abs(distance - 111.195) < 0.01);
 }
 
-//TEST_CASE("Test 2", "[flag]"){
-//	// you can also use "sections" to share setup code between tests, for example:
-//	int one = 1;
-//
-//	SECTION("num is 2") {
-//		int num = one + 1;
-//		REQUIRE(num == 2);
-//	};
-//
-//	SECTION("num is 3") {
-//		int num = one + 2;
-//		REQUIRE(num == 3);
-//	};
-//
-//	// each section runs the setup code independently to ensure that they don't affect each other
-//}
-//
-//// you must write 5 unique, meaningful tests for credit on the testing portion of this project!
-//
-//// the provided test from the template is below.
-//
-//TEST_CASE("Example BST Insert", "[flag]"){
-//	/*
-//		MyAVLTree tree;   // Create a Tree object
-//		tree.insert(3);
-//		tree.insert(2);
-//		tree.insert(1);
-//		std::vector<int> actualOutput = tree.inorder();
-//		std::vector<int> expectedOutput = {1, 2, 3};
-//		REQUIRE(expectedOutput.size() == actualOutput.size());
-//		REQUIRE(actualOutput == expectedOutput);
-//	*/
-//}
+TEST_CASE("Test 4: No sightings in radius", "[sightings]")
+{
+  std::vector<Sighting> sightings;
+
+  Sighting A{0.0, 1.0, "Circle", 2020, 2.1, "Jacksonville", "NC", "US"};
+  Sighting B{1.0, 0.0, "Square", 2021, 2.2, "Gainesville", "FL", "US"};
+  Sighting C{2.0, 0.0, "Oval", 2026, 2.3, "Myrtle Beach", "SC", "US"};
+  Sighting D{0.0, 2.0,};
+  Sighting E{5.0, 1.0};
+  Sighting F{2.0, 2.0};
+  Sighting G{1.5, 2.5};
+  Sighting H{1.1, 1.1};
+
+  sightings.push_back(A);
+  sightings.push_back(B);
+  sightings.push_back(C);
+  sightings.push_back(D);
+  sightings.push_back(E);
+  sightings.push_back(F);
+  sightings.push_back(G);
+  sightings.push_back(H);
+
+  auto results = sightingsInDistance(sightings, 0.0, 0.0, 0);
+
+  REQUIRE(results.empty());
+}
+
+TEST_CASE("Test 5: Some sightings in radius", "[sightings]")
+{
+  std::vector<Sighting> sightings;
+
+  Sighting A{0.0, 1.0, "Circle", 2020, 2.1, "Jacksonville", "NC", "US"};
+  Sighting B{1.0, 0.0, "Square", 2021, 2.2, "Gainesville", "FL", "US"};
+  Sighting C{2.0, 0.0, "Oval", 2026, 2.3, "Myrtle Beach", "SC", "US"};
+  Sighting D{0.0, 2.0,};
+  Sighting E{5.0, 1.0};
+  Sighting F{2.0, 2.0};
+  Sighting G{1.5, 2.5};
+  Sighting H{1.1, 1.1};
+
+  sightings.push_back(A);
+  sightings.push_back(B);
+  sightings.push_back(C);
+  sightings.push_back(D);
+  sightings.push_back(E);
+  sightings.push_back(F);
+  sightings.push_back(G);
+  sightings.push_back(H);
+
+  auto results = sightingsInDistance(sightings, 0.0, 0.0, 120);
+  std::vector<int> expectedResults{0, 1};
+
+  REQUIRE(results == expectedResults);
+}
+
+TEST_CASE("Test 6: All sightings in radius", "[sightings]")
+{
+  std::vector<Sighting> sightings;
+
+  Sighting A{0.0, 1.0, "Circle", 2020, 2.1, "Jacksonville", "NC", "US"};
+  Sighting B{1.0, 0.0, "Square", 2021, 2.2, "Gainesville", "FL", "US"};
+  Sighting C{2.0, 0.0, "Oval", 2026, 2.3, "Myrtle Beach", "SC", "US"};
+  Sighting D{0.0, 2.0,};
+  Sighting E{5.0, 1.0};
+  Sighting F{2.0, 2.0};
+  Sighting G{1.5, 2.5};
+  Sighting H{1.1, 1.1};
+
+  sightings.push_back(A);
+  sightings.push_back(B);
+  sightings.push_back(C);
+  sightings.push_back(D);
+  sightings.push_back(E);
+  sightings.push_back(F);
+  sightings.push_back(G);
+  sightings.push_back(H);
+
+  auto results = sightingsInDistance(sightings, 0.0, 0.0, 1000000);
+  std::vector<int> expectedResults{0, 1, 2, 3, 4, 5, 6, 7};
+
+  REQUIRE(results == expectedResults);
+}
+
+TEST_CASE("Test 7: Empty Vector", "[sightings]")
+{
+  std::vector<Sighting> sightings;
+
+  Sighting A{0.0, 1.0, "Circle", 2020, 2.1, "Jacksonville", "NC", "US"};
+  Sighting B{1.0, 0.0, "Square", 2021, 2.2, "Gainesville", "FL", "US"};
+  Sighting C{2.0, 0.0, "Oval", 2026, 2.3, "Myrtle Beach", "SC", "US"};
+  Sighting D{0.0, 2.0,};
+  Sighting E{5.0, 1.0};
+  Sighting F{2.0, 2.0};
+  Sighting G{1.5, 2.5};
+  Sighting H{1.1, 1.1};
+
+  auto results = sightingsInDistance(sightings, 0.0, 0.0, 1000000);
+  std::vector<int> expectedResults{};
+
+  REQUIRE(results == expectedResults);
+}
+
+TEST_CASE("Test 8: Search centered on a sighting", "[sightings]")
+{
+  std::vector<Sighting> sightings;
+
+  Sighting A{0.0, 1.0, "Circle", 2020, 2.1, "Jacksonville", "NC", "US"};
+  Sighting B{1.0, 0.0, "Square", 2021, 2.2, "Gainesville", "FL", "US"};
+  Sighting C{2.0, 0.0, "Oval", 2026, 2.3, "Myrtle Beach", "SC", "US"};
+  Sighting D{0.0, 2.0,};
+  Sighting E{5.0, 1.0};
+  Sighting F{2.0, 2.0};
+  Sighting G{1.5, 2.5};
+  Sighting H{1.1, 1.1};
+
+  sightings.push_back(A);
+  sightings.push_back(B);
+  sightings.push_back(C);
+  sightings.push_back(D);
+  sightings.push_back(E);
+  sightings.push_back(F);
+  sightings.push_back(G);
+  sightings.push_back(H);
+
+  auto results = sightingsInDistance(sightings, 0.0, 1.0, 0);
+  std::vector<int> expectedResults{0};
+
+  REQUIRE(results == expectedResults);
+}
+
