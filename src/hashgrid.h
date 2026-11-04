@@ -14,6 +14,8 @@ class HashGrid
 
 public:
   HashGrid(double cellSize); // Hash table constructor
+  void insertSighting(const Sighting& sighting, int index); // Insert sighting into table
+  std::vector<int> findCell(double lat, double lon) const;
 };
 
 #endif //PROJECT2_HASHGRID_H
