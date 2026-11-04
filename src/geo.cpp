@@ -4,13 +4,14 @@
 
 #include "sighting.h"
 
-static double toRadians(double deg)
+double toRadians(double deg)
 {
     return deg * M_PI / 180.0;
 }
 
 double haversineKm(double const lat1, double const lon1, double const lat2, double const lon2)
 // Codex told me I needed a "haversine" function, but I wrote it
+// Codex did tell me what some of the formulae were (such as angle using asin and the inters)
 {
     // Constant for Earth radius
     int constexpr radius = 6371;
@@ -21,8 +22,7 @@ double haversineKm(double const lat1, double const lon1, double const lat2, doub
 
     // Compute the intermediates for North-South, East-West, and then overall
     double const interNS = sin(toRadians(latChange / 2)) * sin(toRadians(latChange / 2));
-    double const interEW = cos(toRadians(lat1)) * cos(toRadians(lat2)) * sin(toRadians(lonChange / 2)) * sin(
-                               toRadians(lonChange / 2));
+    double const interEW = cos(toRadians(lat1)) * cos(toRadians(lat2)) * sin(toRadians(lonChange / 2)) * sin(toRadians(lonChange / 2));
     double inter = interNS + interEW;
 
     // Clamp values for the intermediate
