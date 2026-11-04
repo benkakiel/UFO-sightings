@@ -1,5 +1,6 @@
 #include <catch2/catch_test_macros.hpp>
 #include <iostream>
+#include <algorithm>
 #include "geo.h"
 #include "hashgrid.h"
 using namespace std;
@@ -147,5 +148,103 @@ TEST_CASE("Test 12: 0 insertions", "[insertion]")
   REQUIRE(expectedContents.size() == 0);
 }
 
+TEST_CASE("Test 13: 1 insertion then verify with radiusSearch", "[radiusSearch]")
+{
+  auto sightings = makeTestSightings();
+
+  HashGrid hash(10);
+  hash.insertSighting(sightings[0], 0);
+
+  auto results = hash.radiusSearch(sightings, 0.0, 1.0, 120);
+  std::vector<int> expected{0};
+
+  REQUIRE(results == expected);
+}
+
+TEST_CASE("Test 14: Multiple insertions then verify with radiusSearch", "[radiusSearch]")
+{
+  auto sightings = makeTestSightings();
+
+  HashGrid hash(10);
+  hash.insertSighting(sightings[0], 0);
+  hash.insertSighting(sightings[1], 1);
+  hash.insertSighting(sightings[2], 2);
+
+  auto results = hash.radiusSearch(sightings, 0.0, 0.0, 120);
+  std::vector<int> expected{0, 1};
+
+  REQUIRE(results == expected);
+}
+
+TEST_CASE("Test 15: Multiple insertions verified across multiple cells)", "[radiusSearch]")
+{
+  auto sightings = makeTestSightings();
+
+  HashGrid hash(1.0);
+  hash.insertSighting(sightings[0], 0);
+  hash.insertSighting(sightings[6], 6);
+  hash.insertSighting(sightings[1], 1);
+
+  auto results = hash.radiusSearch(sightings, 0.0, 0.0, 600);
+  std::vector<int> expected{0, 1, 6};
+
+  std::sort(results.begin(), results.end());
+
+  REQUIRE(results == expected);
+}
+
+TEST_CASE("Test 16: Compare radiusSearch and sightingsInDistance to ensure accuracy", "[search compare]")
+{
+  auto sightings = makeTestSightings();
+
+  HashGrid hash(1.0);
+
+  hash.insertSighting(sightings[0], 0);
+  hash.insertSighting(sightings[1], 1);
+  hash.insertSighting(sightings[2], 2);
+  hash.insertSighting(sightings[3], 3);
+  hash.insertSighting(sightings[4], 4);
+  hash.insertSighting(sightings[5], 5);
+  hash.insertSighting(sightings[6], 6);
+  hash.insertSighting(sightings[7], 7);
+
+  auto result1 = sightingsInDistance(sightings, 0.0, 0.0, 600);
+  auto result2 = hash.radiusSearch(sightings, 0.0, 0.0, 600);
+
+  std::sort(result1.begin(), result1.end());
+  std::sort(result2.begin(), result2.end());
+
+  std::vector<int> expected{0, 1, 2, 3, 4, 5, 6, 7};
+
+  REQUIRE(result1 == result2);
+  REQUIRE(result1 == expected);
+}
+
+TEST_CASE("Test 17: Compare radiusSearch and sightingsInDistance to ensure accuracy", "[search compare]")
+{
+  auto sightings = makeTestSightings();
+
+  HashGrid hash(1.0);
+
+  hash.insertSighting(sightings[0], 0);
+  hash.insertSighting(sightings[1], 1);
+  hash.insertSighting(sightings[2], 2);
+  hash.insertSighting(sightings[3], 3);
+  hash.insertSighting(sightings[4], 4);
+  hash.insertSighting(sightings[5], 5);
+  hash.insertSighting(sightings[6], 6);
+  hash.insertSighting(sightings[7], 7);
+
+  auto result1 = sightingsInDistance(sightings, 0.0, 0.0, 120);
+  auto result2 = hash.radiusSearch(sightings, 0.0, 0.0, 120);
+
+  std::sort(result1.begin(), result1.end());
+  std::sort(result2.begin(), result2.end());
+
+  std::vector<int> expected{0, 1};
+
+  REQUIRE(result1 == result2);
+  REQUIRE(result1 == expected);
+}
 
 
