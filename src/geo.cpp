@@ -42,6 +42,7 @@ double haversineKm(double const lat1, double const lon1, double const lat2, doub
 }
 
 std::vector<int> sightingsInDistance(const std::vector<Sighting>& sightings, double searchLat, double searchLon, double radius)
+// Linear search through a vector of sightings and return those found inside the radius from a search point
 {
     std::vector<int> foundSightings;
 
