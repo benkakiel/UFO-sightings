@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "geo.h"
 #include "hashgrid.h"
+#include "loader.h"
 using namespace std;
 
 TEST_CASE("Test 1: Haversine = 0", "[haversine]")
@@ -245,6 +246,27 @@ TEST_CASE("Test 17: Compare radiusSearch and sightingsInDistance to ensure accur
 
   REQUIRE(result1 == result2);
   REQUIRE(result1 == expected);
+}
+
+TEST_CASE("Test 18: Ensure all sightings loaded properly", "[load sightings]")
+{
+  auto load = loadSightings("data/close_encounters_simplified.csv");
+
+  REQUIRE(load.size() == 100000);
+}
+
+TEST_CASE("Test 19: Ensure correctness of a sighting", "[load sightings]")
+{
+  auto load = loadSightings("data/close_encounters_simplified.csv");
+
+  REQUIRE(std::abs(load[0].lat - 59.7766667) < 0.0001);
+  REQUIRE(std::abs(load[0].lon - (-151.8313889)) < 0.0001);
+  REQUIRE(load[0].shape == "disk");
+  REQUIRE(load[0].year == 2005);
+  REQUIRE(std::abs(load[0].duration - 300.0) < 0.001);
+  REQUIRE(load[0].city == "anchor point");
+  REQUIRE(load[0].state == "AK");
+  REQUIRE(load[0].country == "US");
 }
 
 
