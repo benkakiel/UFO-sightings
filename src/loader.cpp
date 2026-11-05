@@ -3,10 +3,8 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
-#include <direct.h>
 #include "loader.h"
 
-#include <iostream>
 
 std::vector<Sighting> loadSightings(const std::string& filepath)
 {
@@ -70,9 +68,6 @@ std::vector<Sighting> loadSightings(const std::string& filepath)
 
   else
   {
-    char path[4096];
-    if (_getcwd(path, sizeof(path)) != nullptr)
-      std::cout << path << std::endl;
     throw std::invalid_argument("File was not opened properly"); // If file doesn't open, throw an error
   }
   return sightings; // Return the vector of all Sightings
