@@ -1,4 +1,6 @@
 # Close Encounters Library
+- A project by Nicolas Niemi and Benjamin Kakiel
+- University of Florida, COP3530, Fall 26, Kapoor
 
 ## Instructions for our project
 1. Press run in the IDE
