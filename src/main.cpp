@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include "sighting.h"
 #include "loader.h"
@@ -60,15 +61,19 @@ int main()
       cout << "Enter a year of the sighting (0 for no filter): ";
       cin >> yearFilter;
 
+      // Codex did give some help with learning about std::chrono
+      auto timeBegin = std::chrono::high_resolution_clock::now();
       auto found = sightingsInDistance(sightings, lat, lon, radius);
+      auto timeEnd = std::chrono::high_resolution_clock::now();
+      auto timeFinal = (timeEnd - timeBegin) / 1000;
 
-      if (found.size() == 0)
+      if (found.empty() == true)
       {
         cout << "No sightings found based on these parameters" << endl;
         cout << endl;
       }
 
-      if (found.size() != 0)
+      if (found.empty() == false)
       {
         for (int i : found)
         {
@@ -97,6 +102,8 @@ int main()
           cout << endl;
         }
       }
+      cout << "Total sightings in distance: " << found.size() << endl;
+      cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
     }
 
     if (selection == 2) // Grid search
@@ -123,15 +130,18 @@ int main()
       cout << "Enter a year of the sighting (0 for no filter): ";
       cin >> yearFilter;
 
+      auto timeBegin = std::chrono::high_resolution_clock::now();
       auto found = grid.radiusSearch(sightings, lat, lon, radius); // Create a vector of all sightings within radius of viewpoint
+      auto timeEnd = std::chrono::high_resolution_clock::now();
+      auto timeFinal = (timeEnd - timeBegin) / 1000;
 
-      if (found.size() == 0)
+      if (found.empty() == true)
       {
         cout << "No sightings found based on these parameters" << endl;
         cout << endl;
       }
 
-      if (found.size() != 0)
+      if (found.empty() == false)
       {
         for (int i : found)
         {
@@ -160,6 +170,8 @@ int main()
           cout << endl;
         }
       }
+      cout << "Total sightings in radius: " << found.size() << endl;
+      cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
     }
   }
 
