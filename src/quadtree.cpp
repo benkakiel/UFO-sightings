@@ -31,20 +31,69 @@ QuadTree::Node::~Node()
         delete children[i];
 }
 //QuadTree
+
+QuadTree::QuadTree()
+    : sightings(nullptr)
+{
+    root = new Node(BoundingBox(-90.0, 90.0, -180.0, 180.0));
+}
+
+QuadTree::~QuadTree()
+{
+    delete root;
+}
+
+void QuadTree::build(const std::vector<Sighting>& sightingsRef)
+{
+    sightings = &sightingsRef;
+    for (int i = 0; i < static_cast<int>(sightingsRef.size()); i++)
+        insert(root, i);
+}
+
+void QuadTree::insertSighting(const Sighting& sighting, int index)
+{
+    insert(root, index);
+}
+
+void QuadTree::subdivide(Node* node)
+{
+    double midLat = (node->bounds.minLat + node->bounds.maxLat) / 2.0;
+    double midLon = (node->bounds.minLon + node->bounds.maxLon) / 2.0;
+
+    node->children[0] = new Node(BoundingBox(midLat, node->bounds.maxLat,
+                                              node->bounds.minLon, midLon));
+    node->children[1] = new Node(BoundingBox(midLat, node->bounds.maxLat,
+                                              midLon, node->bounds.maxLon));
+    node->children[2] = new Node(BoundingBox(node->bounds.minLat, midLat,
+                                              node->bounds.minLon, midLon));
+    node->children[3] = new Node(BoundingBox(node->bounds.minLat, midLat,
+                                              midLon, node->bounds.maxLon));
+    node->divided = true;
+}
+
+void QuadTree::insert(Node* node, int index)
+{
+    const Sighting& s = (*sightings)[index];
+
+    if (!node->bounds.contains(s.lat, s.lon))
+        return;
+
+    if (!node->divided && static_cast<int>(node->indices.size()) < MAX_CAPACITY)
+    {
+        node->indices.push_back(index);
+        return;
     }
 
     // Need to split if not already divided
     if (!node->divided)
     {
         subdivide(node);
-        // Insert back the existing indices into children
         for (int i : node->indices)
             for (int c = 0; c < 4; c++)
                 insert(node->children[c], i);
         node->indices.clear();
     }
 
-    // Insert new index into the appropriate child
     for (int c = 0; c < 4; c++)
         insert(node->children[c], index);
 }
