@@ -20,6 +20,10 @@ int main()
     grid.insertSighting(sightings[i], i); // Insert each sighting into the table
   }
 
+  // initialize quadtree and build it with the sightings
+  QuadTree quadtree;
+  quadtree.build(sightings);
+
   // Menu commands
 
   cout << endl;
