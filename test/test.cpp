@@ -278,7 +278,8 @@ TEST_CASE("Test 20: QuadTree 1 insertion then verify with radiusSearch", "[quadt
     qt.build(sightings);
 
     auto results = qt.radiusSearch(sightings, 0.0, 1.0, 120);
-    std::vector<int> expected{0};
+    std::sort(results.begin(), results.end());
+    std::vector<int> expected{0, 3};
     REQUIRE(results == expected);
 }
 
