@@ -96,6 +96,7 @@ std::vector<int> HashGrid::radiusSearch(const std::vector<Sighting> &sightings, 
     auto lonChange = asin(val); // Take arcsin of val
 
     lonChange = lonChange * 180.0 / M_PI; // Convert to degrees
+
     minLon = lon - lonChange; // Western edge of search
     maxLon = lon + lonChange; // Eastern edge of search
   }
