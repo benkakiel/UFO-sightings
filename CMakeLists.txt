@@ -28,9 +28,8 @@ add_executable(Main
         src/hashgrid.h
         src/hashgrid.cpp
         src/sighting.h
-        # add your own header files below - should be automatically added in CLion
-        # example (can also separate with newlines):
-        # src/AVL.h src/AVL.cpp
+        src/quadtree.cpp
+        src/quadtree.h
         )
         
 # These tests can use the Catch2-provided main
@@ -42,9 +41,8 @@ add_executable(Tests
         src/loader.cpp
         src/hashgrid.h
         src/hashgrid.cpp
-        # add your own header files below - should be automatically added in CLion
-        # example (can also separate with newlines):
-        # src/AVL.h src/AVL.cpp
+        src/quadtree.cpp
+        src/quadtree.h
         )
         
 target_link_libraries(Tests PRIVATE Catch2::Catch2WithMain) #link catch to test.cpp file
