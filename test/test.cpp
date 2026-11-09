@@ -4,6 +4,7 @@
 #include "geo.h"
 #include "hashgrid.h"
 #include "loader.h"
+#include "quadtree.h"
 using namespace std;
 
 TEST_CASE("Test 1: Haversine = 0", "[haversine]")
