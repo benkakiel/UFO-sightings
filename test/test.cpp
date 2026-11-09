@@ -270,4 +270,68 @@ TEST_CASE("Test 19: Ensure correctness of a sighting", "[load sightings]")
   REQUIRE(load[0].country == "US");
 }
 
+// Quadtree test cases
+TEST_CASE("Test 18: QuadTree 1 insertion then verify with radiusSearch", "[quadtree]")
+{
+    auto sightings = makeTestSightings();
+    QuadTree qt;
+    qt.build(sightings);
 
+    auto results = qt.radiusSearch(sightings, 0.0, 1.0, 120);
+    std::vector<int> expected{0};
+    REQUIRE(results == expected);
+}
+
+TEST_CASE("Test 19: QuadTree multiple insertions then verify with radiusSearch", "[quadtree]")
+{
+    auto sightings = makeTestSightings();
+    QuadTree qt;
+    qt.build(sightings);
+
+    auto results = qt.radiusSearch(sightings, 0.0, 0.0, 120);
+    std::sort(results.begin(), results.end());
+    std::vector<int> expected{0, 1};
+    REQUIRE(results == expected);
+}
+
+TEST_CASE("Test 20: QuadTree radius search returns nothing outside radius", "[quadtree]")
+{
+    auto sightings = makeTestSightings();
+    QuadTree qt;
+    qt.build(sightings);
+
+    auto results = qt.radiusSearch(sightings, 0.0, 0.0, 1);
+    REQUIRE(results.empty());
+}
+
+TEST_CASE("Test 21: QuadTree compare with sightingsInDistance - large radius", "[quadtree]")
+{
+    auto sightings = makeTestSightings();
+    QuadTree qt;
+    qt.build(sightings);
+
+    auto result1 = sightingsInDistance(sightings, 0.0, 0.0, 600);
+    auto result2 = qt.radiusSearch(sightings, 0.0, 0.0, 600);
+
+    std::sort(result1.begin(), result1.end());
+    std::sort(result2.begin(), result2.end());
+
+    REQUIRE(result1 == result2);
+}
+
+TEST_CASE("Test 22: QuadTree compare with sightingsInDistance - small radius", "[quadtree]")
+{
+    auto sightings = makeTestSightings();
+    QuadTree qt;
+    qt.build(sightings);
+
+    auto result1 = sightingsInDistance(sightings, 0.0, 0.0, 120);
+    auto result2 = qt.radiusSearch(sightings, 0.0, 0.0, 120);
+
+    std::sort(result1.begin(), result1.end());
+    std::sort(result2.begin(), result2.end());
+
+    std::vector<int> expected{0, 1};
+    REQUIRE(result1 == result2);
+    REQUIRE(result1 == expected);
+}
