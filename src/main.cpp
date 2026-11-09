@@ -119,6 +119,8 @@ int main()
       auto timeEnd = std::chrono::high_resolution_clock::now();
       auto timeFinal = (timeEnd - timeBegin) / 1000;
 
+      int count = 0;
+
       if (found.empty() == true)
       {
         cout << "No sightings found based on these parameters" << endl;
@@ -152,9 +154,11 @@ int main()
           cout << "State where sighting was reported: " << sighting.state << endl;
           cout << "Country where sighting was reported: " << sighting.country << endl;
           cout << endl;
+          count += 1;
         }
       }
       cout << "Total sightings in distance: " << found.size() << endl;
+      cout << "Total sightings matching filters: " << count << endl;
       cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
       cout << endl;
       printMenu = true;
@@ -226,6 +230,8 @@ int main()
       auto timeEnd = std::chrono::high_resolution_clock::now();
       auto timeFinal = (timeEnd - timeBegin) / 1000;
 
+      int count = 0;
+
       if (found.empty() == true)
       {
         cout << "No sightings found based on these parameters" << endl;
@@ -259,9 +265,11 @@ int main()
           cout << "State where sighting was reported: " << sighting.state << endl;
           cout << "Country where sighting was reported: " << sighting.country << endl;
           cout << endl;
+          count += 1;
         }
       }
       cout << "Total sightings in radius: " << found.size() << endl;
+      cout << "Total sightings matching filters: " << count << endl;
       cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
       cout << endl;
       printMenu = true;
