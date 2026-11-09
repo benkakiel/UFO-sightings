@@ -178,7 +178,71 @@ int main()
       cout << "Total sightings in radius: " << found.size() << endl;
       cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
     }
+
+    if (selection == 3) // Quadtree search
+  {
+    double lat;
+    double lon;
+    double radius;
+    string shapeFilter;
+    int yearFilter;
+
+    cout << "Input latitude of viewpoint (Ex. 0.0): ";
+    cin >> lat;
+    cout << endl;
+
+    cout << "Input longitude of viewpoint (Ex. 0.0): ";
+    cin >> lon;
+
+    cout << "Input radius (kilometers) of search (Ex. 120): ";
+    cin >> radius;
+
+    cout << "Enter a shape (lowercase) (ALL for no filter): ";
+    cin >> shapeFilter;
+
+    cout << "Enter a year of the sighting (0 for no filter): ";
+    cin >> yearFilter;
+
+    auto timeBegin = std::chrono::high_resolution_clock::now();
+    auto found = quadtree.radiusSearch(sightings, lat, lon, radius);
+    auto timeEnd = std::chrono::high_resolution_clock::now();
+    auto timeFinal = (timeEnd - timeBegin) / 1000;
+
+    if (found.empty() == true)
+    {
+        cout << "No sightings found based on these parameters" << endl;
+        cout << endl;
+    }
+
+    if (found.empty() == false)
+    {
+      for (int i : found)
+        {
+            const auto &sighting = sightings[i];
+
+            if (shapeFilter != "ALL" && sighting.shape != shapeFilter)
+                continue;
+
+            if (yearFilter != 0 && sighting.year != yearFilter)
+                continue;
+
+            cout << "Latitude of sighting: " << sighting.lat << endl;
+            cout << "Longitude of sighting: " << sighting.lon << endl;
+            cout << "Shape of sighting: " << sighting.shape << endl;
+            cout << "Year of sighting: " << sighting.year << endl;
+            cout << "Duration of sighting (seconds): " << sighting.duration << endl;
+            cout << "City where sighting was reported: " << sighting.city << endl;
+            cout << "State where sighting was reported: " << sighting.state << endl;
+            cout << "Country where sighting was reported: " << sighting.country << endl;
+            cout << endl;
+        }
+    }
+    cout << "Total sightings in distance: " << found.size() << endl;
+    cout << "Total time taken to filter through sightings: " << timeFinal.count() << " microseconds" << endl;
+    }
+
   }
+
 
   if (selection == 4)
   {
