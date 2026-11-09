@@ -6,6 +6,7 @@
 #include "loader.h"
 #include "hashgrid.h"
 #include "geo.h"
+#include "quadtree.h"
 
 using namespace std;
 
