@@ -271,7 +271,7 @@ TEST_CASE("Test 19: Ensure correctness of a sighting", "[load sightings]")
 }
 
 // Quadtree test cases
-TEST_CASE("Test 18: QuadTree 1 insertion then verify with radiusSearch", "[quadtree]")
+TEST_CASE("Test 20: QuadTree 1 insertion then verify with radiusSearch", "[quadtree]")
 {
     auto sightings = makeTestSightings();
     QuadTree qt;
@@ -282,7 +282,7 @@ TEST_CASE("Test 18: QuadTree 1 insertion then verify with radiusSearch", "[quadt
     REQUIRE(results == expected);
 }
 
-TEST_CASE("Test 19: QuadTree multiple insertions then verify with radiusSearch", "[quadtree]")
+TEST_CASE("Test 21: QuadTree multiple insertions then verify with radiusSearch", "[quadtree]")
 {
     auto sightings = makeTestSightings();
     QuadTree qt;
@@ -294,7 +294,7 @@ TEST_CASE("Test 19: QuadTree multiple insertions then verify with radiusSearch",
     REQUIRE(results == expected);
 }
 
-TEST_CASE("Test 20: QuadTree radius search returns nothing outside radius", "[quadtree]")
+TEST_CASE("Test 22: QuadTree radius search returns nothing outside radius", "[quadtree]")
 {
     auto sightings = makeTestSightings();
     QuadTree qt;
@@ -304,7 +304,7 @@ TEST_CASE("Test 20: QuadTree radius search returns nothing outside radius", "[qu
     REQUIRE(results.empty());
 }
 
-TEST_CASE("Test 21: QuadTree compare with sightingsInDistance - large radius", "[quadtree]")
+TEST_CASE("Test 23: QuadTree compare with sightingsInDistance - large radius", "[quadtree]")
 {
     auto sightings = makeTestSightings();
     QuadTree qt;
@@ -319,7 +319,7 @@ TEST_CASE("Test 21: QuadTree compare with sightingsInDistance - large radius", "
     REQUIRE(result1 == result2);
 }
 
-TEST_CASE("Test 22: QuadTree compare with sightingsInDistance - small radius", "[quadtree]")
+TEST_CASE("Test 24: QuadTree compare with sightingsInDistance - small radius", "[quadtree]")
 {
     auto sightings = makeTestSightings();
     QuadTree qt;
