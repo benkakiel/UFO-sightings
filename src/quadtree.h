@@ -17,3 +17,38 @@ struct BoundingBox
     bool contains(double lat, double lon) const;
     bool intersects(const BoundingBox& other) const;
 };
+
+class QuadTree
+{
+    static constexpr int MAX_CAPACITY = 4; // Max sightings per node before splitting
+
+    struct Node
+    {
+        BoundingBox bounds;
+        std::vector<int> indices;   // Indices into the master sightings vector
+        Node* children[4];          // NW, NE, SW, SE
+        bool divided;
+
+        explicit Node(BoundingBox bounds);
+        ~Node();
+    };
+
+    Node* root;
+    const std::vector<Sighting>* sightings; 
+
+    void insert(Node* node, int index);
+    void subdivide(Node* node);
+    void radiusSearch(const Node* node, double lat, double lon,
+                      double radius, std::vector<int>& results) const;
+
+public:
+    QuadTree();
+    ~QuadTree();
+
+    void build(const std::vector<Sighting>& sightings);
+    void insertSighting(const Sighting& sighting, int index);
+    std::vector<int> radiusSearch(const std::vector<Sighting>& sightings,
+                                  double lat, double lon, double radius) const;
+};
+
+#endif // PROJECT2_QUADTREE_H
