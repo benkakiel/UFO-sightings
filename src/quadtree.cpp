@@ -17,3 +17,16 @@ bool BoundingBox::intersects(const BoundingBox& other) const
     if (other.minLon > maxLon || other.maxLon < minLon) return false;
     return true;
 }
+
+//Node
+QuadTree::Node::Node(BoundingBox bounds)
+    : bounds(bounds), divided(false)
+{
+    children[0] = children[1] = children[2] = children[3] = nullptr;
+}
+
+QuadTree::Node::~Node()
+{
+    for (int i = 0; i < 4; i++)
+        delete children[i];
+}
