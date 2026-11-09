@@ -31,7 +31,6 @@ QuadTree::Node::~Node()
         delete children[i];
 }
 //QuadTree
-
 QuadTree::QuadTree()
     : sightings(nullptr)
 {
