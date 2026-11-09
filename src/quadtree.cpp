@@ -89,12 +89,25 @@ void QuadTree::insert(Node* node, int index)
         subdivide(node);
         for (int i : node->indices)
             for (int c = 0; c < 4; c++)
-                insert(node->children[c], i);
+            {
+                if (node->children[c]->bounds.contains((*sightings)[i].lat, (*sightings)[i].lon))
+                {
+                    insert(node->children[c], i);
+                    break;
+                }
+            }
         node->indices.clear();
     }
 
+    // Insert new index into the correct child only
     for (int c = 0; c < 4; c++)
-        insert(node->children[c], index);
+    {
+        if (node->children[c]->bounds.contains(s.lat, s.lon))
+        {
+            insert(node->children[c], index);
+            break;
+        }
+    }
 }
 
 void QuadTree::radiusSearch(const Node* node, double lat, double lon,
